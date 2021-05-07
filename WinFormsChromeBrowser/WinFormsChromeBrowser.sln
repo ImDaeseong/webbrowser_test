@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31205.134
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinFormsChromeBrowser", "WinFormsChromeBrowser\WinFormsChromeBrowser.csproj", "{76B3B002-1D39-45DD-8A78-7DCE749DFA4F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{76B3B002-1D39-45DD-8A78-7DCE749DFA4F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{76B3B002-1D39-45DD-8A78-7DCE749DFA4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{76B3B002-1D39-45DD-8A78-7DCE749DFA4F}.Debug|x64.ActiveCfg = Debug|x64
+		{76B3B002-1D39-45DD-8A78-7DCE749DFA4F}.Debug|x64.Build.0 = Debug|x64
+		{76B3B002-1D39-45DD-8A78-7DCE749DFA4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{76B3B002-1D39-45DD-8A78-7DCE749DFA4F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{76B3B002-1D39-45DD-8A78-7DCE749DFA4F}.Release|x64.ActiveCfg = Release|x64
+		{76B3B002-1D39-45DD-8A78-7DCE749DFA4F}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BB4A8BED-EA85-4933-A970-37B8E5B40C85}
+	EndGlobalSection
+EndGlobal
