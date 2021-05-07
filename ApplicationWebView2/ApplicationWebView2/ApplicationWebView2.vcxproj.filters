@@ -15,10 +15,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="MFCWebView2.h">
+    <ClInclude Include="ApplicationWebView2.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="MFCWebView2Dlg.h">
+    <ClInclude Include="ApplicationWebView2Dlg.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="framework.h">
@@ -35,10 +35,10 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="MFCWebView2.cpp">
+    <ClCompile Include="ApplicationWebView2.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="MFCWebView2Dlg.cpp">
+    <ClCompile Include="ApplicationWebView2Dlg.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="pch.cpp">
@@ -46,18 +46,18 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="MFCWebView2.rc">
+    <ResourceCompile Include="ApplicationWebView2.rc">
       <Filter>리소스 파일</Filter>
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="res\MFCWebView2.rc2">
+    <None Include="res\ApplicationWebView2.rc2">
       <Filter>리소스 파일</Filter>
     </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="res\MFCWebView2.ico">
+    <Image Include="res\ApplicationWebView2.ico">
       <Filter>리소스 파일</Filter>
     </Image>
   </ItemGroup>

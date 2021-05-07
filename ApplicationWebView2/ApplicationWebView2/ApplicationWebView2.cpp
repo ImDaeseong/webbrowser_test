@@ -1,23 +1,23 @@
 #include "pch.h"
 #include "framework.h"
-#include "MFCWebView2.h"
-#include "MFCWebView2Dlg.h"
+#include "ApplicationWebView2.h"
+#include "ApplicationWebView2Dlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
 
-BEGIN_MESSAGE_MAP(CMFCWebView2App, CWinApp)
+BEGIN_MESSAGE_MAP(CApplicationWebView2App, CWinApp)
 	ON_COMMAND(ID_HELP, &CWinApp::OnHelp)
 END_MESSAGE_MAP()
 
-CMFCWebView2App::CMFCWebView2App()
+CApplicationWebView2App::CApplicationWebView2App()
 {
 }
 
-CMFCWebView2App theApp;
+CApplicationWebView2App theApp;
 
-BOOL CMFCWebView2App::InitInstance()
+BOOL CApplicationWebView2App::InitInstance()
 {
 	INITCOMMONCONTROLSEX InitCtrls;
 	InitCtrls.dwSize = sizeof(InitCtrls);
@@ -32,7 +32,7 @@ BOOL CMFCWebView2App::InitInstance()
 
 	CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CMFCVisualManagerWindows));
 
-	CMFCWebView2Dlg dlg;
+	CApplicationWebView2Dlg dlg;
 	m_pMainWnd = &dlg;
 	INT_PTR nResponse = dlg.DoModal();
 	if (nResponse == IDOK)
@@ -60,7 +60,7 @@ BOOL CMFCWebView2App::InitInstance()
 	return FALSE;
 }
 
-int CMFCWebView2App::ExitInstance()
+int CApplicationWebView2App::ExitInstance()
 {
 	return CWinApp::ExitInstance();
 }

@@ -1,9 +1,9 @@
 //{{NO_DEPENDENCIES}}
 // Microsoft Visual C++ generated include file.
-// Used by MFCWebView2.rc
+// Used by ApplicationWebView2.rc
 //
 #define IDR_MAINFRAME					128
-#define IDD_MFCWEBVIEW2_DIALOG				102
+#define IDD_APPLICATIONWEBVIEW2_DIALOG				102
 
 // Next default values for new objects
 //

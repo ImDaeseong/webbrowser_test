@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "framework.h"
-#include "MFCWebView2.h"
-#include "MFCWebView2Dlg.h"
+#include "ApplicationWebView2.h"
+#include "ApplicationWebView2Dlg.h"
 #include "afxdialogex.h"
 
 #ifdef _DEBUG
@@ -12,23 +12,23 @@ using namespace Microsoft::WRL;
 static wil::com_ptr<ICoreWebView2Controller> webviewController;
 static wil::com_ptr<ICoreWebView2> webviewWindow;
 
-CMFCWebView2Dlg::CMFCWebView2Dlg(CWnd* pParent /*=nullptr*/)
-	: CDialogEx(IDD_MFCWEBVIEW2_DIALOG, pParent)
+CApplicationWebView2Dlg::CApplicationWebView2Dlg(CWnd* pParent /*=nullptr*/)
+	: CDialogEx(IDD_APPLICATIONWEBVIEW2_DIALOG, pParent)
 {
 }
 
-void CMFCWebView2Dlg::DoDataExchange(CDataExchange* pDX)
+void CApplicationWebView2Dlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
 }
 
-BEGIN_MESSAGE_MAP(CMFCWebView2Dlg, CDialogEx)
+BEGIN_MESSAGE_MAP(CApplicationWebView2Dlg, CDialogEx)
 	ON_WM_PAINT()
 	ON_WM_SIZE()
 	ON_WM_DESTROY()
 END_MESSAGE_MAP()
 
-BOOL CMFCWebView2Dlg::OnInitDialog()
+BOOL CApplicationWebView2Dlg::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
 
@@ -131,12 +131,12 @@ BOOL CMFCWebView2Dlg::OnInitDialog()
 	return TRUE;  
 }
 
-void CMFCWebView2Dlg::OnPaint()
+void CApplicationWebView2Dlg::OnPaint()
 {
 	CPaintDC dc(this);
 }
 
-void CMFCWebView2Dlg::OnSize(UINT nType, int cx, int cy)
+void CApplicationWebView2Dlg::OnSize(UINT nType, int cx, int cy)
 {
 	CDialogEx::OnSize(nType, cx, cy);
 
@@ -147,7 +147,7 @@ void CMFCWebView2Dlg::OnSize(UINT nType, int cx, int cy)
 	};
 }
 
-void CMFCWebView2Dlg::OnDestroy()
+void CApplicationWebView2Dlg::OnDestroy()
 {
 	CDialogEx::OnDestroy();
 

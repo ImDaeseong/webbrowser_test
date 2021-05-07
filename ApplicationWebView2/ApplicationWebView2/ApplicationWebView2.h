@@ -6,16 +6,17 @@
 
 #include "resource.h"		// main symbols
 
-class CMFCWebView2App : public CWinApp
+class CApplicationWebView2App : public CWinApp
 {
 public:
-	CMFCWebView2App();
+	CApplicationWebView2App();
 
+// Overrides
 public:
 	virtual BOOL InitInstance();
 	virtual int ExitInstance();
 
-	DECLARE_MESSAGE_MAP()
+	DECLARE_MESSAGE_MAP()	
 };
 
-extern CMFCWebView2App theApp;
+extern CApplicationWebView2App theApp;
