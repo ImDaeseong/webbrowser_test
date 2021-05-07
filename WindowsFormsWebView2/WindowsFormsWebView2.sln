@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31205.134
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsFormsWebView2", "WindowsFormsWebView2\WindowsFormsWebView2.csproj", "{C321A12F-50D3-4E05-9118-886FFC5A9A3E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C321A12F-50D3-4E05-9118-886FFC5A9A3E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C321A12F-50D3-4E05-9118-886FFC5A9A3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C321A12F-50D3-4E05-9118-886FFC5A9A3E}.Debug|x64.ActiveCfg = Release|x64
+		{C321A12F-50D3-4E05-9118-886FFC5A9A3E}.Debug|x64.Build.0 = Release|x64
+		{C321A12F-50D3-4E05-9118-886FFC5A9A3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C321A12F-50D3-4E05-9118-886FFC5A9A3E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C321A12F-50D3-4E05-9118-886FFC5A9A3E}.Release|x64.ActiveCfg = Release|x64
+		{C321A12F-50D3-4E05-9118-886FFC5A9A3E}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6E29E469-45A6-430F-BD9D-8000258EC7F1}
+	EndGlobalSection
+EndGlobal
