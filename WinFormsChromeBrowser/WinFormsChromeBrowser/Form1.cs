@@ -68,5 +68,20 @@ namespace WinFormsChromeBrowser
                 Console.WriteLine(sMsg);
             }));
         }
+
+        private void chromiumWebBrowser_LoadingStateChanged(object sender, LoadingStateChangedEventArgs e)
+        {
+            try
+            {
+                string sMsg = (e.IsLoading ? "Loading..." : chromiumWebBrowser.Address);
+                Console.WriteLine(sMsg);
+
+                if (e.IsLoading == false)
+                {
+                    //브라우저 로드 완료시 해야할 일을 실행
+                }
+            }
+            catch { }
+        }
     }
 }

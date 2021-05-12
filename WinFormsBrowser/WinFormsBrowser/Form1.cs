@@ -31,11 +31,16 @@ namespace WinFormsBrowser
         private void webView_NavigationStarting(object sender, Microsoft.Web.WebView2.Core.CoreWebView2NavigationStartingEventArgs e)
         {
             Console.WriteLine("webView_NavigationStarting");
+
+            Console.WriteLine(e.Uri);
         }
 
         private void webView_NavigationCompleted(object sender, Microsoft.Web.WebView2.Core.CoreWebView2NavigationCompletedEventArgs e)
         {
             Console.WriteLine("webView_NavigationCompleted");
+
+            string surl = this.webView.Source.ToString();
+            Console.WriteLine(surl);
         }
     }
 }

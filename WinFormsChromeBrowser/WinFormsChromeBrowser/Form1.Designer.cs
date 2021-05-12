@@ -42,6 +42,7 @@ namespace WinFormsChromeBrowser
             this.chromiumWebBrowser.Size = new System.Drawing.Size(800, 450);
             this.chromiumWebBrowser.TabIndex = 0;
             this.chromiumWebBrowser.LoadError += new System.EventHandler<CefSharp.LoadErrorEventArgs>(this.chromiumWebBrowser_LoadError);
+            this.chromiumWebBrowser.LoadingStateChanged += new System.EventHandler<CefSharp.LoadingStateChangedEventArgs>(this.chromiumWebBrowser_LoadingStateChanged);
             this.chromiumWebBrowser.StatusMessage += new System.EventHandler<CefSharp.StatusMessageEventArgs>(this.chromiumWebBrowser_StatusMessage);
             this.chromiumWebBrowser.AddressChanged += new System.EventHandler<CefSharp.AddressChangedEventArgs>(this.chromiumWebBrowser_AddressChanged);
             this.chromiumWebBrowser.TitleChanged += new System.EventHandler<CefSharp.TitleChangedEventArgs>(this.chromiumWebBrowser_TitleChanged);
