@@ -11,6 +11,7 @@ WebView2Ex::~WebView2Ex()
         m_webView->remove_NavigationCompleted(m_navigationCompletedToken);
         m_webView->remove_SourceChanged(m_sourceChangedToken);
         m_webView->remove_DocumentTitleChanged(m_documentTitleChangedToken);
+        m_webView->remove_NewWindowRequested(m_newWindowRequestedToken);
     }
 }
 
@@ -100,6 +101,12 @@ void WebView2Ex::AddEventHandlers()
                 OnDocumentTitleChanged(sender, args);
                 return S_OK;
             }).Get(), &m_documentTitleChangedToken);
+      
+        m_webView->add_NewWindowRequested(Microsoft::WRL::Callback<ICoreWebView2NewWindowRequestedEventHandler>(
+            [this](ICoreWebView2* sender, ICoreWebView2NewWindowRequestedEventArgs* args) -> HRESULT {                
+                OnNewWindowRequested(sender, args);
+                return S_OK;
+            }).Get(), &m_newWindowRequestedToken);
     }
 }
 
@@ -133,4 +140,29 @@ void WebView2Ex::OnDocumentTitleChanged(ICoreWebView2* sender, IUnknown* args)
         ::SetWindowText(m_hWnd, title.get());
     }
     if (m_eventCallback) m_eventCallback->OnDocumentTitleChanged(title.get());
+}
+
+void WebView2Ex::OnNewWindowRequested(ICoreWebView2* sender, ICoreWebView2NewWindowRequestedEventArgs* args)
+{
+    BOOL handled = FALSE;
+    args->get_Handled(&handled);
+    if (!handled)
+    {
+        ///*
+        //팝업 호출 금지 -내부에서 페이지 변경됨
+        wil::unique_cotaskmem_string uri;
+        args->get_Uri(&uri);
+        sender->Navigate(uri.get());
+        args->put_Handled(TRUE);
+        //*/
+
+        /*
+        //별도 페이지 처리시 url 를 받아서 webView 별도 처리시
+        wil::unique_cotaskmem_string uri;
+        args->get_Uri(&uri);
+        args->put_Handled(TRUE);
+        */
+
+        if (m_eventCallback) m_eventCallback->OnNewWindowRequested(uri.get());
+    }    
 }

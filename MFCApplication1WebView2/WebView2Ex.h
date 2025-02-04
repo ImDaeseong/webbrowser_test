@@ -14,6 +14,7 @@ public:
     virtual void OnSourceChanged(const std::wstring& source) = 0;
     virtual void OnDocumentTitleChanged(const std::wstring& title) = 0;
     virtual void OnWebView2Created() = 0;
+    virtual void OnNewWindowRequested(const std::wstring& uri) = 0;
 };
 
 class WebView2Ex
@@ -34,6 +35,8 @@ private:
     void OnNavigationCompleted(ICoreWebView2* sender, ICoreWebView2NavigationCompletedEventArgs* args);
     void OnSourceChanged(ICoreWebView2* sender, ICoreWebView2SourceChangedEventArgs* args);
     void OnDocumentTitleChanged(ICoreWebView2* sender, IUnknown* args);
+    void OnNewWindowRequested(ICoreWebView2* sender, ICoreWebView2NewWindowRequestedEventArgs* args);
+    
 
     Microsoft::WRL::ComPtr<ICoreWebView2> m_webView;
     Microsoft::WRL::ComPtr<ICoreWebView2Environment> m_webViewEnvironment;
@@ -44,6 +47,7 @@ private:
     EventRegistrationToken m_navigationCompletedToken;
     EventRegistrationToken m_sourceChangedToken;
     EventRegistrationToken m_documentTitleChangedToken;
+    EventRegistrationToken m_newWindowRequestedToken;
 
     IWebView2EventCallback* m_eventCallback = nullptr;
 };

@@ -98,6 +98,13 @@ void CMFCApplication1WebView2Dlg::OnWebView2Created()
     }
 }
 
+//새페이지 및 팝업 호출시
+void CMFCApplication1WebView2Dlg::OnNewWindowRequested(const std::wstring& uri)
+{
+    CString strMsg;
+    strMsg.Format(_T("OnNewWindowRequested: %s"), uri.c_str());
+}
+
 void CMFCApplication1WebView2Dlg::ResizeWebView()
 {
     if (m_webViewEx)

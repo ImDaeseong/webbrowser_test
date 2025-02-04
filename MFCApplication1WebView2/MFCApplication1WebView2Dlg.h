@@ -24,6 +24,7 @@ public:
     virtual void OnSourceChanged(const std::wstring& source) override;
     virtual void OnDocumentTitleChanged(const std::wstring& title) override;
     virtual void OnWebView2Created() override;
+    virtual void OnNewWindowRequested(const std::wstring& uri) override;
 
 private:
     std::unique_ptr<WebView2Ex> m_webViewEx;
