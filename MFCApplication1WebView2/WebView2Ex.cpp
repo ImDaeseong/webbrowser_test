@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "WebView2Ex.h"
 
-WebView2Ex::WebView2Ex() : m_hWnd(NULL) {}
+WebView2Ex::WebView2Ex() : m_hWnd(nullptr), m_eventCallback(nullptr) {}
 
 WebView2Ex::~WebView2Ex()
 {
@@ -62,7 +62,7 @@ void WebView2Ex::Navigate(LPCWSTR url)
     if (m_webView)
     {
         m_webView->Navigate(url);
-    }
+    }    
 }
 
 void WebView2Ex::SetBounds(int left, int top, int width, int height)
@@ -144,25 +144,20 @@ void WebView2Ex::OnDocumentTitleChanged(ICoreWebView2* sender, IUnknown* args)
 
 void WebView2Ex::OnNewWindowRequested(ICoreWebView2* sender, ICoreWebView2NewWindowRequestedEventArgs* args)
 {
-    BOOL handled = FALSE;
-    args->get_Handled(&handled);
-    if (!handled)
-    {
-        ///*
-        //팝업 호출 금지 -내부에서 페이지 변경됨
-        wil::unique_cotaskmem_string uri;
-        args->get_Uri(&uri);
-        sender->Navigate(uri.get());
-        args->put_Handled(TRUE);
-        //*/
+    wil::unique_cotaskmem_string uri;
+    args->get_Uri(&uri);
 
-        /*
-        //별도 페이지 처리시 url 를 받아서 webView 별도 처리시
-        wil::unique_cotaskmem_string uri;
-        args->get_Uri(&uri);
-        args->put_Handled(TRUE);
-        */
+    ///*
+    //팝업 호출 금지 -내부에서 페이지 변경됨
+    sender->Navigate(uri.get());
+    //*/
+    
+    /*
+    //별도 페이지 처리시 url 를 받아서 webView 별도 처리시
+    //sender->Navigate(uri.get());
+    */
 
-        if (m_eventCallback) m_eventCallback->OnNewWindowRequested(uri.get());
-    }    
+    args->put_Handled(TRUE);
+
+    if (m_eventCallback) m_eventCallback->OnNewWindowRequested(uri.get());
 }
