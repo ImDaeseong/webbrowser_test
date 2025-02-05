@@ -3,8 +3,8 @@
 
 WebView2Ex::WebView2Ex() : m_hWnd(nullptr), m_eventCallback(nullptr) {}
 
-WebView2Ex::~WebView2Ex()
-{
+WebView2Ex::~WebView2Ex() {
+
     if (m_webView)
     {
         m_webView->remove_NavigationStarting(m_navigationStartingToken);
@@ -18,19 +18,23 @@ WebView2Ex::~WebView2Ex()
 HRESULT WebView2Ex::Create(HWND hWnd)
 {
     m_hWnd = hWnd;
+
     return CreateCoreWebView2EnvironmentWithOptions(nullptr, nullptr, nullptr,
         Microsoft::WRL::Callback<ICoreWebView2CreateCoreWebView2EnvironmentCompletedHandler>(
             [this](HRESULT result, ICoreWebView2Environment* env) -> HRESULT {
+                
                 if (SUCCEEDED(result))
                 {
                     m_webViewEnvironment = env;
                     return m_webViewEnvironment->CreateCoreWebView2Controller(m_hWnd,
                         Microsoft::WRL::Callback<ICoreWebView2CreateCoreWebView2ControllerCompletedHandler>(
                             [this](HRESULT result, ICoreWebView2Controller* controller) -> HRESULT {
+                                
                                 if (SUCCEEDED(result))
                                 {
                                     m_webViewController = controller;
                                     m_webViewController->get_CoreWebView2(&m_webView);
+                                    
                                     if (m_webView)
                                     {
                                         AddEventHandlers();

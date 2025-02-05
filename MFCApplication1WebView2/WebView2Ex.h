@@ -6,8 +6,7 @@
 #include <WebView2.h>
 #include <sstream>
 
-class IWebView2EventCallback
-{
+class IWebView2EventCallback {
 public:
     virtual void OnNavigationStarting(const std::wstring& uri) = 0;
     virtual void OnNavigationCompleted(bool bSuccess) = 0;
@@ -22,11 +21,9 @@ class WebView2Ex
 public:
     WebView2Ex();
     ~WebView2Ex();
-
     HRESULT Create(HWND hWnd);
     void Navigate(LPCWSTR url);
     void SetBounds(int left, int top, int width, int height);
-
     void SetEventCallback(IWebView2EventCallback* callback) { m_eventCallback = callback; }
 
 private:
@@ -36,11 +33,11 @@ private:
     void OnSourceChanged(ICoreWebView2* sender, ICoreWebView2SourceChangedEventArgs* args);
     void OnDocumentTitleChanged(ICoreWebView2* sender, IUnknown* args);
     void OnNewWindowRequested(ICoreWebView2* sender, ICoreWebView2NewWindowRequestedEventArgs* args);
-    
 
     Microsoft::WRL::ComPtr<ICoreWebView2> m_webView;
     Microsoft::WRL::ComPtr<ICoreWebView2Environment> m_webViewEnvironment;
     Microsoft::WRL::ComPtr<ICoreWebView2Controller> m_webViewController;
+
     HWND m_hWnd;
 
     EventRegistrationToken m_navigationStartingToken;
