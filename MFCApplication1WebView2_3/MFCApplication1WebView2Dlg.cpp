@@ -106,6 +106,12 @@ void CMFCApplication1WebView2Dlg::OnNewWindowRequested(const std::wstring& uri)
     strMsg.Format(_T("OnNewWindowRequested: %s"), uri.c_str());
 }
 
+//단추키 호출
+void CMFCApplication1WebView2Dlg::OnOnAcceleratorKey()
+{
+    AfxMessageBox(_T("단추키 호출"));
+}
+
 void CMFCApplication1WebView2Dlg::ResizeWebView()
 {
     if (m_webViewEx)

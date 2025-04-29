@@ -89,6 +89,7 @@ CWebBrowser::CWebBrowser() :m_pImpl(new CWebBrowserImpl())
 {
 	m_callbacks[CallbackType::CreationCompleted] = nullptr;
 	m_callbacks[CallbackType::NavigationCompleted] = nullptr;
+	m_callbacks[CallbackType::AcceleratorKey] = nullptr;
 
 	m_hMain = nullptr;
 	m_fDPIScaleX = 0;
@@ -162,14 +163,23 @@ void CWebBrowser::RegisterCallback(CallbackType const type, CallbackFunc callbac
 
 void CWebBrowser::CloseWebView()
 {
+	// WebView 관련 해제
 	if (m_pImpl->m_webView)
 	{
 		m_pImpl->m_webView->remove_NavigationCompleted(m_navigationCompletedToken);
 		m_pImpl->m_webView->remove_NavigationStarting(m_navigationStartingToken);
 		m_pImpl->m_webView->remove_DocumentTitleChanged(m_documentTitleChangedToken);
 
+		// AcceleratorKeyPressed 이벤트 해제
+		if (m_acceleratorKeyPressedToken.value != 0 && m_pImpl->m_webController)
+		{
+			m_pImpl->m_webController->remove_AcceleratorKeyPressed(m_acceleratorKeyPressedToken);
+		}
+
+		// WebController 닫기
 		m_pImpl->m_webController->Close();
 
+		// WebController 초기화
 		m_pImpl->m_webController = nullptr;
 		m_pImpl->m_webView = nullptr;
 		m_pImpl->m_webView2 = nullptr;
@@ -177,6 +187,7 @@ void CWebBrowser::CloseWebView()
 		m_pImpl->m_webSettings = nullptr;
 	}
 
+	// WebView 환경 해제
 	m_pImpl->m_webViewEnvironment2 = nullptr;
 	m_pImpl->m_webViewEnvironment = nullptr;
 }
@@ -407,6 +418,52 @@ void CWebBrowser::RegisterEventHandlers()
 					return S_OK;
 			})
 		.Get(), &m_webResourceResponseReceivedToken));
+
+	//AcceleratorKey
+	CHECK_FAILURE(m_pImpl->m_webController->add_AcceleratorKeyPressed(
+		Callback<ICoreWebView2AcceleratorKeyPressedEventHandler>(
+			[this](ICoreWebView2Controller* /*controller*/, ICoreWebView2AcceleratorKeyPressedEventArgs* args) -> HRESULT
+			{		
+				COREWEBVIEW2_KEY_EVENT_KIND kind;
+				if (FAILED(args->get_KeyEventKind(&kind)) || kind != COREWEBVIEW2_KEY_EVENT_KIND_KEY_DOWN)
+				{
+					return S_OK;
+				}
+
+				UINT32 key = 0;
+				if (FAILED(args->get_VirtualKey(&key)))
+				{
+					return S_OK;
+				}
+
+				const bool ctrl = (GetAsyncKeyState(VK_CONTROL) & 0x8000) != 0;
+				const bool shift = (GetAsyncKeyState(VK_SHIFT) & 0x8000) != 0;
+				const bool alt = (GetAsyncKeyState(VK_MENU) & 0x8000) != 0;
+
+				if (key == VK_F1)
+				{
+					args->put_Handled(TRUE);
+					return S_OK;
+				}
+
+				if (key == 'Y' && ctrl && shift && alt)
+				{
+					args->put_Handled(TRUE);
+					auto callback = m_callbacks[CallbackType::AcceleratorKey];
+					if (callback)
+						RunAsync(callback);
+					return S_OK;
+				}
+
+				if (key == VK_CANCEL && ctrl)
+				{
+					args->put_Handled(TRUE);
+					return S_OK;
+				}
+				
+				return S_OK;
+			})
+		.Get(), &m_acceleratorKeyPressedToken));
 }
 
 void CWebBrowser::ResizeToClientArea()

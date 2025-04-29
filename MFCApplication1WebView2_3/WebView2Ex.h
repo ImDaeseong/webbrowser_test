@@ -14,6 +14,7 @@ public:
     virtual void OnDocumentTitleChanged(const std::wstring& title) = 0;
     virtual void OnWebView2Created() = 0;
     virtual void OnNewWindowRequested(const std::wstring& uri) = 0;
+    virtual void OnOnAcceleratorKey() = 0;
 };
 
 class WebView2Ex {
@@ -33,6 +34,7 @@ private:
     void OnSourceChanged(ICoreWebView2* sender, ICoreWebView2SourceChangedEventArgs* args);
     void OnDocumentTitleChanged(ICoreWebView2* sender, IUnknown* args);
     void OnNewWindowRequested(ICoreWebView2* sender, ICoreWebView2NewWindowRequestedEventArgs* args);
+    HRESULT OnAcceleratorKeyPressed(ICoreWebView2AcceleratorKeyPressedEventArgs* args);
 
     Microsoft::WRL::ComPtr<ICoreWebView2_3> m_webView;
     Microsoft::WRL::ComPtr<ICoreWebView2Environment3> m_webViewEnvironment;
@@ -45,6 +47,7 @@ private:
     EventRegistrationToken m_sourceChangedToken;
     EventRegistrationToken m_documentTitleChangedToken;
     EventRegistrationToken m_newWindowRequestedToken;
-    
+    EventRegistrationToken m_acceleratorKeyPressedToken;
+
     IWebView2EventCallback* m_eventCallback;
 };

@@ -12,7 +12,19 @@ WebView2Ex::~WebView2Ex() {
         m_webView->remove_SourceChanged(m_sourceChangedToken);
         m_webView->remove_DocumentTitleChanged(m_documentTitleChangedToken);
         m_webView->remove_NewWindowRequested(m_newWindowRequestedToken);
+        m_webView = nullptr;
     }
+
+    if (m_webViewController)
+    {
+        if (m_acceleratorKeyPressedToken.value != 0)
+        {
+            m_webViewController->remove_AcceleratorKeyPressed(m_acceleratorKeyPressedToken);
+        }
+        m_webViewController = nullptr;
+    }
+
+    m_webViewEnvironment = nullptr;
 }
 
 HRESULT WebView2Ex::Create(HWND hWnd) {
@@ -149,7 +161,12 @@ void WebView2Ex::AddEventHandlers()
             [this](ICoreWebView2* sender, ICoreWebView2NewWindowRequestedEventArgs* args) -> HRESULT {                
                 OnNewWindowRequested(sender, args);
                 return S_OK;
-            }).Get(), &m_newWindowRequestedToken);        
+            }).Get(), &m_newWindowRequestedToken);
+
+        m_webViewController->add_AcceleratorKeyPressed(Microsoft::WRL::Callback<ICoreWebView2AcceleratorKeyPressedEventHandler>(
+            [this](ICoreWebView2Controller*, ICoreWebView2AcceleratorKeyPressedEventArgs* args) -> HRESULT {
+                return OnAcceleratorKeyPressed(args);
+            }).Get(), &m_acceleratorKeyPressedToken);
     }
 }
 
@@ -225,4 +242,43 @@ void WebView2Ex::OnNewWindowRequested(ICoreWebView2* sender, ICoreWebView2NewWin
             m_eventCallback->OnNewWindowRequested(uri.get());
         }
     }
+}
+
+HRESULT WebView2Ex::OnAcceleratorKeyPressed(ICoreWebView2AcceleratorKeyPressedEventArgs* args)
+{
+    COREWEBVIEW2_KEY_EVENT_KIND kind;
+    if (FAILED(args->get_KeyEventKind(&kind)) || kind != COREWEBVIEW2_KEY_EVENT_KIND_KEY_DOWN)
+        return S_OK;
+
+    UINT32 key = 0;
+    if (FAILED(args->get_VirtualKey(&key)))
+        return S_OK;
+
+    const bool ctrl = (GetAsyncKeyState(VK_CONTROL) & 0x8000) != 0;
+    const bool shift = (GetAsyncKeyState(VK_SHIFT) & 0x8000) != 0;
+    const bool alt = (GetAsyncKeyState(VK_MENU) & 0x8000) != 0;
+
+    if (key == VK_F1)
+    {
+        args->put_Handled(TRUE);
+        return S_OK;
+    }
+
+    if (key == 0x59 && ctrl && shift && alt)
+    {
+        args->put_Handled(TRUE);
+        if (m_eventCallback)
+        {
+            m_eventCallback->OnOnAcceleratorKey();
+        }
+        return S_OK;
+    }
+
+    if (key == VK_CANCEL && ctrl)
+    {
+        args->put_Handled(TRUE);
+        return S_OK;
+    }
+
+    return S_OK;
 }

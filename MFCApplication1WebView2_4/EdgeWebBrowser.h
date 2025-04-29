@@ -33,6 +33,7 @@ public:
 		CreationCompleted,
 		NavigationCompleted,
 		TitleChanged,
+		AcceleratorKey,
 	};
 
 	using CallbackFunc = std::function<void()>;
@@ -101,6 +102,7 @@ private:
 	EventRegistrationToken m_navigationStartingToken = {};
 	EventRegistrationToken m_documentTitleChangedToken = {};
 	EventRegistrationToken m_webResourceResponseReceivedToken = {};
+	EventRegistrationToken m_acceleratorKeyPressedToken = {};
 
 	bool m_isNavigating = false;
 	CDialog* m_pViewParent = nullptr;

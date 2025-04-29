@@ -74,6 +74,10 @@ void CMFCApplication1WebView2Dlg::initWebView()
 					CString title = m_pWebBrowser->GetTitle();
 					AfxGetMainWnd()->SetWindowText(title);
 					});
+
+				m_pWebBrowser->RegisterCallback(CWebBrowser::CallbackType::AcceleratorKey, [this]() {
+					AfxMessageBox(_T("단추키 호출"));
+					});
 			});
 	}
 }
