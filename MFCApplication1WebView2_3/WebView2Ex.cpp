@@ -1,7 +1,21 @@
 #include "pch.h"
 #include "WebView2Ex.h"
 
-WebView2Ex::WebView2Ex() : m_hWnd(nullptr), m_eventCallback(nullptr) {}
+WebView2Ex::WebView2Ex()
+{
+    m_hWnd = nullptr;
+    m_eventCallback = nullptr;
+    m_webView = nullptr;
+    m_webViewController = nullptr;
+    m_webViewEnvironment = nullptr;
+
+    m_navigationCompletedToken = { 0 };
+    m_navigationStartingToken = { 0 };
+    m_documentTitleChangedToken = { 0 };
+    m_acceleratorKeyPressedToken = { 0 };
+    m_sourceChangedToken = { 0 };
+    m_newWindowRequestedToken = { 0 };
+}
 
 WebView2Ex::~WebView2Ex() {
     
@@ -12,18 +26,22 @@ WebView2Ex::~WebView2Ex() {
         m_webView->remove_SourceChanged(m_sourceChangedToken);
         m_webView->remove_DocumentTitleChanged(m_documentTitleChangedToken);
         m_webView->remove_NewWindowRequested(m_newWindowRequestedToken);
-        m_webView = nullptr;
     }
 
+    // AcceleratorKeyPressed 이벤트 해제
+    if (m_acceleratorKeyPressedToken.value != 0 && m_webViewController)
+    {
+        m_webViewController->remove_AcceleratorKeyPressed(m_acceleratorKeyPressedToken);
+    }
+
+    // 컨트롤러 닫기
     if (m_webViewController)
     {
-        if (m_acceleratorKeyPressedToken.value != 0)
-        {
-            m_webViewController->remove_AcceleratorKeyPressed(m_acceleratorKeyPressedToken);
-        }
-        m_webViewController = nullptr;
+        m_webViewController->Close();
     }
 
+    m_webView = nullptr;
+    m_webViewController = nullptr;
     m_webViewEnvironment = nullptr;
 }
 

@@ -8,6 +8,8 @@
 
 class IWebView2EventCallback {
 public:
+    virtual ~IWebView2EventCallback() = default;
+
     virtual void OnNavigationStarting(const std::wstring& uri) = 0;
     virtual void OnNavigationCompleted(bool bSuccess) = 0;
     virtual void OnSourceChanged(const std::wstring& source) = 0;
@@ -40,14 +42,13 @@ private:
     Microsoft::WRL::ComPtr<ICoreWebView2Environment> m_webViewEnvironment;
     Microsoft::WRL::ComPtr<ICoreWebView2Controller> m_webViewController;
 
-    HWND m_hWnd;
-
-    EventRegistrationToken m_navigationStartingToken;
-    EventRegistrationToken m_navigationCompletedToken;
-    EventRegistrationToken m_sourceChangedToken;
-    EventRegistrationToken m_documentTitleChangedToken;
-    EventRegistrationToken m_newWindowRequestedToken;
-    EventRegistrationToken m_acceleratorKeyPressedToken;
-
+    HWND m_hWnd = nullptr;
     IWebView2EventCallback* m_eventCallback = nullptr;
+
+    EventRegistrationToken m_navigationStartingToken{};
+    EventRegistrationToken m_navigationCompletedToken{};
+    EventRegistrationToken m_sourceChangedToken{};
+    EventRegistrationToken m_documentTitleChangedToken{};
+    EventRegistrationToken m_newWindowRequestedToken{};
+    EventRegistrationToken m_acceleratorKeyPressedToken{};
 };

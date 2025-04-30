@@ -36,6 +36,9 @@
     <ClInclude Include="WebView2Ex.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="WebDialog.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MFCApplication1WebView2.cpp">
@@ -48,6 +51,9 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="WebView2Ex.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="WebDialog.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
@@ -66,5 +72,8 @@
     <Image Include="res\MFCApplication1WebView2.ico">
       <Filter>리소스 파일</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Natvis Include="$(MSBuildThisFileDirectory)..\..\natvis\wil.natvis" />
   </ItemGroup>
 </Project>
