@@ -306,6 +306,12 @@ HRESULT CWebBrowser::OnCreateWebViewControllerCompleted(
 			CHECK_FAILURE(m_pImpl->m_webSettings->put_AreDevToolsEnabled(FALSE));
 #endif
 
+			// 상태 표시줄 비활성화 추가
+			CHECK_FAILURE(m_pImpl->m_webSettings->put_IsStatusBarEnabled(FALSE));
+
+			// 기본 컨텍스트 메뉴 비활성화 추가
+			CHECK_FAILURE(m_pImpl->m_webSettings->put_AreDefaultContextMenusEnabled(FALSE));
+
 			RegisterEventHandlers();
 
 			ResizeToClientArea();

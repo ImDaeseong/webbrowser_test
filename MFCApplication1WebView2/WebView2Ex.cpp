@@ -74,6 +74,13 @@ HRESULT WebView2Ex::Create(HWND hWnd)
                                         Settings->put_IsScriptEnabled(TRUE);
                                         Settings->put_AreDefaultScriptDialogsEnabled(TRUE);
                                         Settings->put_IsWebMessageEnabled(TRUE);
+
+                                        // 상태 표시줄 비활성화 추가
+                                        Settings->put_IsStatusBarEnabled(FALSE);
+
+                                        // 기본 컨텍스트 메뉴 비활성화 추가
+                                        Settings->put_AreDefaultContextMenusEnabled(FALSE);
+
                                         Settings->Release();
 
                                         RECT bounds;

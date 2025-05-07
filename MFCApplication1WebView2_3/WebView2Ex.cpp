@@ -79,15 +79,19 @@ HRESULT WebView2Ex::Create(HWND hWnd) {
                                                 
                                                 AddEventHandlers();
 
-                                                if (ICoreWebView2Settings* settings = nullptr) {
+                                                ICoreWebView2Settings* Settings = nullptr;
+                                                m_webView->get_Settings(&Settings);
+                                                Settings->put_IsScriptEnabled(TRUE);
+                                                Settings->put_AreDefaultScriptDialogsEnabled(TRUE);
+                                                Settings->put_IsWebMessageEnabled(TRUE);
 
-                                                    if (SUCCEEDED(m_webView->get_Settings(&settings))) {
-                                                        settings->put_IsScriptEnabled(TRUE);
-                                                        settings->put_AreDefaultScriptDialogsEnabled(TRUE);
-                                                        settings->put_IsWebMessageEnabled(TRUE);
-                                                        settings->Release();
-                                                    }
-                                                }
+                                                // 상태 표시줄 비활성화 추가
+                                                Settings->put_IsStatusBarEnabled(FALSE);
+
+                                                // 기본 컨텍스트 메뉴 비활성화 추가
+                                                Settings->put_AreDefaultContextMenusEnabled(FALSE);
+
+                                                Settings->Release();
 
                                                 RECT bounds;
                                                 GetClientRect(m_hWnd, &bounds);
