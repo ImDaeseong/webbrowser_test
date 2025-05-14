@@ -296,6 +296,13 @@ HRESULT WebView2Ex::OnAcceleratorKeyPressed(ICoreWebView2AcceleratorKeyPressedEv
         return S_OK;
     }
 
+    // Ctrl + Shift + R (Refresh)
+    if (ctrl && shift && key == 'R')
+    {
+        args->put_Handled(TRUE);
+        return S_OK;
+    }
+
     if (key == VK_CANCEL && ctrl)
     {
         args->put_Handled(TRUE);
