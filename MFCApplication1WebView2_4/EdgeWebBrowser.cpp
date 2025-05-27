@@ -90,6 +90,7 @@ CWebBrowser::CWebBrowser() :m_pImpl(new CWebBrowserImpl())
 	m_callbacks[CallbackType::CreationCompleted] = nullptr;
 	m_callbacks[CallbackType::NavigationCompleted] = nullptr;
 	m_callbacks[CallbackType::AcceleratorKey] = nullptr;
+	m_callbacks[CallbackType::WebMessageReceived] = nullptr;
 
 	m_hMain = nullptr;
 	m_fDPIScaleX = 0;
@@ -100,6 +101,7 @@ CWebBrowser::CWebBrowser() :m_pImpl(new CWebBrowserImpl())
 	m_documentTitleChangedToken = { 0 };
 	m_acceleratorKeyPressedToken = { 0 };
 	m_webResourceResponseReceivedToken = { 0 };
+	m_webMessageReceivedToken = { 0 };
 		
 	m_callbacks.clear();
 }
@@ -187,6 +189,7 @@ void CWebBrowser::CloseWebView()
 		m_pImpl->m_webView->remove_NavigationStarting(m_navigationStartingToken);
 		m_pImpl->m_webView->remove_DocumentTitleChanged(m_documentTitleChangedToken);
 		m_pImpl->m_webView2->remove_WebResourceResponseReceived(m_webResourceResponseReceivedToken);
+		m_pImpl->m_webView->remove_WebMessageReceived(m_webMessageReceivedToken);
 	}
 
 	// AcceleratorKeyPressed 이벤트 해제
@@ -498,6 +501,24 @@ void CWebBrowser::RegisterEventHandlers()
 				return S_OK;
 			})
 		.Get(), &m_acceleratorKeyPressedToken));
+
+	//WebMessageReceived
+	CHECK_FAILURE(m_pImpl->m_webView->add_WebMessageReceived(
+		Callback<ICoreWebView2WebMessageReceivedEventHandler>(
+			[this](ICoreWebView2* sender, ICoreWebView2WebMessageReceivedEventArgs* args) -> HRESULT {
+				UNREFERENCED_PARAMETER(args);
+				wil::unique_cotaskmem_string message;
+				CHECK_FAILURE(args->TryGetWebMessageAsString(&message));
+
+				m_strReceive = message.get();
+
+				auto callback = m_callbacks[CallbackType::WebMessageReceived];
+				if (callback != nullptr)
+					RunAsync(callback);
+
+				return S_OK;
+			})
+		.Get(), &m_webMessageReceivedToken));
 }
 
 void CWebBrowser::ResizeToClientArea()

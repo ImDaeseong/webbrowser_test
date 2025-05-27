@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -26,6 +27,26 @@ namespace WindowsFormsWebView2
             webView.CoreWebView2.Navigate(sUrl);
         }
 
+        private void NavigateToString()
+        {
+            //경로에서 html 가져오기
+            /*
+            string sHtmlPath = string.Format("{0}\\webrtc.html", Application.StartupPath);
+            webView.CoreWebView2.Navigate(sHtmlPath);
+            */
+
+            //리소스에서 html 가져오기
+            string sHtmlPath = Properties.Resources.webrtc;
+            webView.CoreWebView2.NavigateToString(sHtmlPath);
+        }
+
+        private void SendMessage(string sMessage)
+        {
+            //웹페이지로 메시지 전달
+            string js = $"window.receiveFromForm({System.Text.Json.JsonSerializer.Serialize(sMessage)});";
+            webView.CoreWebView2.ExecuteScriptAsync(js);
+        }
+
         private void GoBack()
         {
             if (webView.CoreWebView2.CanGoBack)
@@ -44,6 +65,8 @@ namespace WindowsFormsWebView2
             await webView.EnsureCoreWebView2Async(null);
 
             Navigate("https://www.naver.com");
+
+            //NavigateToString();
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
@@ -72,6 +95,13 @@ namespace WindowsFormsWebView2
             Console.WriteLine("webView_SourceChanged");
             string surl = webView.Source.ToString();
             Console.WriteLine(surl);
+        }
+
+        private void webView_WebMessageReceived(object sender, Microsoft.Web.WebView2.Core.CoreWebView2WebMessageReceivedEventArgs e)
+        {
+            //웹페이지에서 전달받은 메시지
+            string sMessage = e.TryGetWebMessageAsString();
+            Console.WriteLine(sMessage);
         }
     }
 }

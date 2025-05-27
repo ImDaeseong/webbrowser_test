@@ -11,6 +11,7 @@ public:
 	virtual ~WebDialog();
 
 	void SetParent(CMFCApplication1WebView2Dlg* pParent);
+	void SendMessage(CString strMessage);
 
 #ifdef AFX_DESIGN_TIME
 	enum { IDD = IDD_WEB_DIALOG };
@@ -32,6 +33,7 @@ protected:
 	virtual void OnWebView2Created() override;
 	virtual void OnNewWindowRequested(const std::wstring& uri) override;
 	virtual void OnOnAcceleratorKey() override;
+	virtual void OnWebMessageReceived(const std::wstring& message) override;
 
 private:
 	void ResizeWebView();

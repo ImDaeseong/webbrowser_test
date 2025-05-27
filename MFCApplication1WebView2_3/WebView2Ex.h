@@ -17,6 +17,7 @@ public:
     virtual void OnWebView2Created() = 0;
     virtual void OnNewWindowRequested(const std::wstring& uri) = 0;
     virtual void OnOnAcceleratorKey() = 0;
+    virtual void OnWebMessageReceived(const std::wstring& message) = 0;
 };
 
 class WebView2Ex {
@@ -26,6 +27,8 @@ public:
     HRESULT Create(HWND hWnd);
     void Navigate(LPCWSTR url);
     void NavigatePost(LPCWSTR url, const std::wstring& postData, LPCWSTR contentType);
+    void PostWebMessageAsString(LPCWSTR message);
+    void ExecuteScript(LPCWSTR message);
     void SetBounds(int left, int top, int width, int height);
     void SetEventCallback(IWebView2EventCallback* callback) { m_eventCallback = callback; }
 
@@ -37,6 +40,7 @@ private:
     void OnDocumentTitleChanged(ICoreWebView2* sender, IUnknown* args);
     void OnNewWindowRequested(ICoreWebView2* sender, ICoreWebView2NewWindowRequestedEventArgs* args);
     HRESULT OnAcceleratorKeyPressed(ICoreWebView2AcceleratorKeyPressedEventArgs* args);
+    void OnWebMessageReceived(ICoreWebView2* sender, ICoreWebView2WebMessageReceivedEventArgs* args);
 
     Microsoft::WRL::ComPtr<ICoreWebView2_3> m_webView;
     Microsoft::WRL::ComPtr<ICoreWebView2Environment3> m_webViewEnvironment;
@@ -51,4 +55,5 @@ private:
     EventRegistrationToken m_documentTitleChangedToken{};
     EventRegistrationToken m_newWindowRequestedToken{};
     EventRegistrationToken m_acceleratorKeyPressedToken{};
+    EventRegistrationToken m_webMessageReceivedToken{};
 };

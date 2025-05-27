@@ -15,6 +15,7 @@ WebView2Ex::WebView2Ex()
     m_acceleratorKeyPressedToken = { 0 };
     m_sourceChangedToken = { 0 };
     m_newWindowRequestedToken = { 0 };
+    m_webMessageReceivedToken = { 0 };
 }
 
 WebView2Ex::~WebView2Ex() {
@@ -25,7 +26,8 @@ WebView2Ex::~WebView2Ex() {
         m_webView->remove_NavigationCompleted(m_navigationCompletedToken);
         m_webView->remove_SourceChanged(m_sourceChangedToken);
         m_webView->remove_DocumentTitleChanged(m_documentTitleChangedToken);
-        m_webView->remove_NewWindowRequested(m_newWindowRequestedToken);        
+        m_webView->remove_NewWindowRequested(m_newWindowRequestedToken);
+        m_webView->remove_WebMessageReceived(m_webMessageReceivedToken);
     }
 
     // AcceleratorKeyPressed 이벤트 해제
@@ -107,6 +109,23 @@ void WebView2Ex::Navigate(LPCWSTR url)
     }    
 }
 
+//웹페이지로 메시지 전달
+void WebView2Ex::PostWebMessageAsString(LPCWSTR message)
+{
+    if (m_webView)
+    {
+        m_webView->PostWebMessageAsString(message);
+    }
+}
+
+void WebView2Ex::ExecuteScript(LPCWSTR message)
+{
+    if (m_webView)
+    {
+        m_webView->ExecuteScript(message, nullptr);
+    }
+}
+
 void WebView2Ex::SetBounds(int left, int top, int width, int height)
 {
     if (m_webViewController)
@@ -154,6 +173,13 @@ void WebView2Ex::AddEventHandlers()
             [this](ICoreWebView2Controller*, ICoreWebView2AcceleratorKeyPressedEventArgs* args) -> HRESULT {
                 return OnAcceleratorKeyPressed(args);
             }).Get(), &m_acceleratorKeyPressedToken);
+
+        m_webView->add_WebMessageReceived(
+            Microsoft::WRL::Callback<ICoreWebView2WebMessageReceivedEventHandler>(
+                [this](ICoreWebView2* sender, ICoreWebView2WebMessageReceivedEventArgs* args) -> HRESULT {
+                    OnWebMessageReceived(sender, args);
+                    return S_OK;
+                }).Get(), &m_webMessageReceivedToken);
     }
 }
 
@@ -253,4 +279,12 @@ HRESULT WebView2Ex::OnAcceleratorKeyPressed(ICoreWebView2AcceleratorKeyPressedEv
     }
 
     return S_OK;
+}
+
+void WebView2Ex::OnWebMessageReceived(ICoreWebView2* sender, ICoreWebView2WebMessageReceivedEventArgs* args)
+{
+    wil::unique_cotaskmem_string message;
+    args->TryGetWebMessageAsString(&message);
+
+    if (m_eventCallback) m_eventCallback->OnWebMessageReceived(message.get());
 }

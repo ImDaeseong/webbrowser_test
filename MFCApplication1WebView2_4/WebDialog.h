@@ -28,6 +28,7 @@ protected:
 private:
 	void initWebView();
 	void NavigateWebView();
+	void SendMesaage(CString strMesssage);
 
 	std::unique_ptr<CWebBrowser> m_pWebBrowser{};
 	CMFCApplication1WebView2Dlg* m_pParent = nullptr;

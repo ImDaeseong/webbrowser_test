@@ -34,6 +34,7 @@ public:
 		NavigationCompleted,
 		TitleChanged,
 		AcceleratorKey,
+		WebMessageReceived,
 	};
 
 	using CallbackFunc = std::function<void()>;
@@ -79,6 +80,7 @@ public:
 
 	void PrintDocument();
 	CString GetTitle() const { return m_strTitle; }
+	CString GetReceiveMessage() const { return m_strReceive; }
 
 	void SetParentView(CDialog* pViewParent) { m_pViewParent = pViewParent; }
 	bool IsWebViewCreated() const;
@@ -103,10 +105,12 @@ private:
 	EventRegistrationToken m_documentTitleChangedToken = {};
 	EventRegistrationToken m_webResourceResponseReceivedToken = {};
 	EventRegistrationToken m_acceleratorKeyPressedToken = {};
+	EventRegistrationToken m_webMessageReceivedToken = {};
 
 	bool m_isNavigating = false;
 	CDialog* m_pViewParent = nullptr;
 	CString m_strTitle;
+	CString m_strReceive;
 	bool m_printToPdfInProgress = false;
 	float m_fDPIScaleX;
 	double m_dbScale;

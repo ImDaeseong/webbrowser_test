@@ -80,13 +80,18 @@ void WebDialog::initWebView()
 				m_pWebBrowser->SetParentView(this);
 				m_pWebBrowser->DisablePopups();
 				m_pWebBrowser->NavigatePost(L"https://www.naver.com", content, headers, this->GetSafeHwnd());
+				//m_pWebBrowser->NavigatePost(L"file:///E:/node_test/SignalingServer/webrtc.html", content, headers, this->GetSafeHwnd());
 				m_pWebBrowser->RegisterCallback(CWebBrowser::CallbackType::TitleChanged, [this]() {
 					CString title = m_pWebBrowser->GetTitle();
 					AfxGetMainWnd()->SetWindowText(title);
 					});
-
 				m_pWebBrowser->RegisterCallback(CWebBrowser::CallbackType::AcceleratorKey, [this]() {
-					AfxMessageBox(_T("단추키 호출"));
+					SendMesaage(_T("스크립트로 메시지 보내기"));
+					//AfxMessageBox(_T("단추키 호출"));
+					});
+				m_pWebBrowser->RegisterCallback(CWebBrowser::CallbackType::WebMessageReceived, [this]() {
+					CString strMsg = m_pWebBrowser->GetReceiveMessage();
+					strMsg.Format(_T("OnWebMessageReceived: %s"), strMsg);
 					});
 			});
 	}
@@ -108,6 +113,10 @@ void WebDialog::NavigateWebView()
 			});
 		m_pWebBrowser->RegisterCallback(CWebBrowser::CallbackType::AcceleratorKey, [this]() {
 			AfxMessageBox(_T("단추키 호출"));
+			});
+		m_pWebBrowser->RegisterCallback(CWebBrowser::CallbackType::WebMessageReceived, [this]() {
+			CString strMsg = m_pWebBrowser->GetReceiveMessage();
+			strMsg.Format(_T("OnWebMessageReceived: %s"), strMsg);
 			});
 	}
 }
@@ -133,4 +142,16 @@ LRESULT WebDialog::OnMessage2(WPARAM wParam, LPARAM lParam)
 void WebDialog::SetParent(CMFCApplication1WebView2Dlg* pParent)
 {
 	m_pParent = pParent;
+}
+
+void WebDialog::SendMesaage(CString strMesssage)
+{
+	//자바스크립트 호출로 메시지 전달
+	CString strSend;
+	strSend.Format(_T("receiveFromForm('%s');"), strMesssage);
+
+	if (m_pWebBrowser)
+	{
+		m_pWebBrowser->ExecuteScript(strSend);
+	}
 }

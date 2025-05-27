@@ -100,6 +100,8 @@ void WebDialog::OnWebView2Created()
     if (m_webViewEx)
     {
         m_webViewEx->Navigate(L"https://www.naver.com");
+        //m_webViewEx->Navigate(L"file:///E:/node_test/SignalingServer/webrtc.html");
+
         ResizeWebView();
     }
 }
@@ -111,10 +113,17 @@ void WebDialog::OnNewWindowRequested(const std::wstring& uri)
     strMsg.Format(_T("OnNewWindowRequested: %s"), uri.c_str());
 }
 
+void WebDialog::OnWebMessageReceived(const std::wstring& message)
+{
+    CString strMsg = _T("");
+    strMsg.Format(_T("OnWebMessageReceived: %s"), message.c_str());
+}
+
 //단추키 호출
 void WebDialog::OnOnAcceleratorKey()
 {
-    AfxMessageBox(_T("단추키 호출"));
+    SendMessage(_T("스크립트로 메시지 보내기"));
+    //AfxMessageBox(_T("단추키 호출"));
 }
 
 void WebDialog::ResizeWebView()
@@ -135,4 +144,16 @@ void WebDialog::ResizeWebView()
 void WebDialog::SetParent(CMFCApplication1WebView2Dlg* pParent)
 {
 	m_pParent = pParent;
+}
+
+void WebDialog::SendMessage(CString strMessage)
+{
+    //자바스크립트 호출로 메시지 전달
+    CString strSend;
+    strSend.Format(_T("receiveFromForm('%s');"), strMessage);
+
+    if (m_webViewEx)
+    {
+        m_webViewEx->ExecuteScript(strSend);
+    }
 }
