@@ -235,6 +235,31 @@ void WebView2Ex::OnNavigationCompleted(ICoreWebView2* sender, ICoreWebView2Navig
     if (SUCCEEDED(args->get_IsSuccess(&success)) && m_eventCallback) 
     {
         m_eventCallback->OnNavigationCompleted(success == TRUE);
+
+        //½ºÅ©·Ñ ¼û±è - Æ¯Á¤ÆäÀÌÁö¸¸
+        if (success)
+        {
+            wil::unique_cotaskmem_string uri;
+            m_webView->get_Source(&uri);
+            if (wcsstr(uri.get(), L"webrtc.html") != nullptr)
+            {
+                m_webView->ExecuteScript(
+                    L"document.documentElement.style.overflow='hidden';"
+                    L"document.body.style.overflow='hidden';",
+                    nullptr);
+            }
+        }
+
+        /*
+        //½ºÅ©·Ñ ¼û±è - ÀüÃ¼
+        if (success)
+        {
+            m_webView->ExecuteScript(
+                L"document.documentElement.style.overflow='hidden';"
+                L"document.body.style.overflow='hidden';",
+                nullptr);
+        }
+        */
     }
 }
 
