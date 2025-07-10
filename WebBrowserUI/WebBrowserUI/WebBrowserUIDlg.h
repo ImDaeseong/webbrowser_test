@@ -18,7 +18,6 @@ public:
 // Implementation
 protected:
 	virtual BOOL OnInitDialog();
-	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	afx_msg void OnPaint();
 	DECLARE_MESSAGE_MAP()
 
@@ -41,6 +40,8 @@ private:
 	void InitControl();
 	void Navigate(CString strURL);
 	BOOL m_LoadedBrowserFlag;
+
+	void DrawRedRectangle(CDC* pDC);
 
 public:
 	void WebBrowserMoveClick(int x, int y, int width = 0, int height = 0);

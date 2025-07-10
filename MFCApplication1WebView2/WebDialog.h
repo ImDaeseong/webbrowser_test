@@ -20,6 +20,7 @@ public:
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 지원입니다.
 	virtual BOOL OnInitDialog();
+	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	afx_msg void OnPaint();
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	afx_msg void OnDestroy();
@@ -37,6 +38,7 @@ protected:
 
 private:
 	void ResizeWebView();
+	void DrawRedRectangle(CDC* pDC);
 
 	std::unique_ptr<WebView2Ex> m_webViewEx{};
 	CMFCApplication1WebView2Dlg* m_pParent = nullptr;

@@ -8,6 +8,9 @@
 #define new DEBUG_NEW
 #endif
 
+//인식해야할 영역 좌표
+static RECT rc = { 214, 1, 395, 45 };
+
 CWebBrowserUIDlg::CWebBrowserUIDlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_WEBBROWSERUI_DIALOG, pParent)
 {
@@ -26,14 +29,6 @@ BEGIN_MESSAGE_MAP(CWebBrowserUIDlg, CDialogEx)
 	ON_WM_DESTROY()
 	ON_WM_MOUSEMOVE()
 END_MESSAGE_MAP()
-
-BOOL CWebBrowserUIDlg::PreTranslateMessage(MSG* pMsg)
-{
-	if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_RETURN) return TRUE;
-	if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_ESCAPE) return TRUE;
-
-	return CDialogEx::PreTranslateMessage(pMsg);
-}
 
 void CWebBrowserUIDlg::OnMouseMove(UINT nFlags, CPoint point)
 {
@@ -78,6 +73,14 @@ void CWebBrowserUIDlg::OnPaint()
 {
 	CPaintDC dc(this);
 	DrawSkin(&dc);
+
+	DrawRedRectangle(&dc);
+}
+
+void CWebBrowserUIDlg::DrawRedRectangle(CDC* pDC)
+{
+	CBrush brush(RGB(255, 0, 0));
+	pDC->FillRect(&rc, &brush);
 }
 
 void CWebBrowserUIDlg::OnDestroy()
@@ -101,9 +104,14 @@ void CWebBrowserUIDlg::MoveLocationDialog()
 
 void CWebBrowserUIDlg::WebBrowserMoveClick(int x, int y, int width, int height)
 {
-	CString strMsg;
-	strMsg.Format(_T("x:%d y:%d"), x, y);
-	OutputDebugString(strMsg);
+	POINT pt = { x, y };
+
+	if (PtInRect(&rc, pt) == TRUE)
+	{
+		CString strMsg;
+		strMsg.Format(_T("x:%d y:%d"), pt.x, pt.y);
+		OutputDebugString(strMsg);
+	}
 }
 
 void CWebBrowserUIDlg::InitControl()

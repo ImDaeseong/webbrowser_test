@@ -3,8 +3,12 @@
 #include "WebDialog.h"
 #include "afxdialogex.h"
 #include "MFCApplication1WebView2Dlg.h"
+#include "JsonManager.h"
 
 IMPLEMENT_DYNAMIC(WebDialog, CDialogEx)
+
+//인식해야할 영역 좌표
+static RECT rc = { 214, 1, 395, 45 };
 
 WebDialog::WebDialog(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_WEB_DIALOG, pParent)
@@ -26,6 +30,13 @@ BEGIN_MESSAGE_MAP(WebDialog, CDialogEx)
 	ON_WM_SIZE()
 	ON_WM_DESTROY()
 END_MESSAGE_MAP()
+
+BOOL WebDialog::PreTranslateMessage(MSG* pMsg)
+{
+    if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_RETURN) return TRUE;
+    if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_ESCAPE) return TRUE;
+    return CDialogEx::PreTranslateMessage(pMsg);
+}
 
 BOOL WebDialog::OnInitDialog()
 {
@@ -50,6 +61,14 @@ BOOL WebDialog::OnInitDialog()
 void WebDialog::OnPaint()
 {
 	CPaintDC dc(this);
+
+    DrawRedRectangle(&dc);;
+}
+
+void WebDialog::DrawRedRectangle(CDC* pDC)
+{
+    CBrush brush(RGB(255, 0, 0));
+    pDC->FillRect(&rc, &brush);
 }
 
 void WebDialog::OnSize(UINT nType, int cx, int cy)
@@ -115,8 +134,40 @@ void WebDialog::OnNewWindowRequested(const std::wstring& uri)
 
 void WebDialog::OnWebMessageReceived(const std::wstring& message)
 {
-    CString strMsg = _T("");
-    strMsg.Format(_T("OnWebMessageReceived: %s"), message.c_str());
+    //CString strMsg = _T("");
+    //strMsg.Format(_T("OnWebMessageReceived: %s \r\n"), message.c_str());
+    //OutputDebugString(strMsg);
+
+    CJsonManager man;
+    if (!man.LoadFromString(message.c_str()))
+        return;
+
+    CString sType = man.GetValueAsCString(_T("type"));
+    if (sType.CompareNoCase(_T("click")) == 0)
+    {
+        Json::Value data = man.GetJsonObject(_T("data"));
+        if (!data.isNull() && data.isObject())
+        {
+            int x = data["x"].asInt();
+            int y = data["y"].asInt();
+            int pageX = data["pageX"].asInt();
+            int pageY = data["pageY"].asInt();
+            int screenX = data["screenX"].asInt();
+            int screenY = data["screenY"].asInt();
+            CString target = CJsonManager::ConvertUtf8ToCString(data["target"].asString());
+            CString targetId = CJsonManager::ConvertUtf8ToCString(data["targetId"].asString());
+            CString targetClass = CJsonManager::ConvertUtf8ToCString(data["targetClass"].asString());
+
+            POINT pt = { x, y };
+
+            if (PtInRect(&rc, pt) == TRUE)
+            {
+                CString strMsg;
+                strMsg.Format(_T("x:%d y:%d"), pt.x, pt.y);
+                OutputDebugString(strMsg);
+            }
+        }
+    }
 }
 
 //단추키 호출

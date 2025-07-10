@@ -210,6 +210,33 @@ void WebView2Ex::OnNavigationCompleted(ICoreWebView2* sender, ICoreWebView2Navig
         }
     }
 
+    // 클릭 이벤트 핸들러 추가
+    if (bSuccess)
+    {
+        m_webView->ExecuteScript(
+            L"(function() {"
+            L"    document.addEventListener('click', function(e) {"
+            L"        var rect = document.documentElement.getBoundingClientRect();"
+            L"        var clickData = {"
+            L"            x: e.clientX,"
+            L"            y: e.clientY,"
+            L"            pageX: e.pageX,"
+            L"            pageY: e.pageY,"
+            L"            screenX: e.screenX,"
+            L"            screenY: e.screenY,"
+            L"            target: e.target.tagName,"
+            L"            targetId: e.target.id || '',"
+            L"            targetClass: e.target.className || ''"
+            L"        };"
+            L"        window.chrome.webview.postMessage(JSON.stringify({"
+            L"            type: 'click',"
+            L"            data: clickData"
+            L"        }));"
+            L"    });"
+            L"})();",
+            nullptr);
+    }
+
     /*
     //스크롤 숨김 - 전체
     if (bSuccess)

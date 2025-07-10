@@ -31,7 +31,7 @@ public:
     void ExecuteScript(LPCWSTR message);
     void SetBounds(int left, int top, int width, int height);
     void SetEventCallback(IWebView2EventCallback* callback) { m_eventCallback = callback; }
-
+    HWND GetHwnd() { return m_hWnd;  }
 private:
     void AddEventHandlers();
     void OnNavigationStarting(ICoreWebView2* sender, ICoreWebView2NavigationStartingEventArgs* args);

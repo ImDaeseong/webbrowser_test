@@ -13,9 +13,12 @@ BOOL WebBrowser2Ex::PreTranslateMessage(MSG* pMsg)
 	{
 		POINT pos;
 		GetCursorPos(&pos);
-		ScreenToClient(&pos);
-
+		
 		CWebBrowserUIDlg* pMain = (CWebBrowserUIDlg*)AfxGetMainWnd();
+
+		//부모 다이얼로그 기준으로
+		::ScreenToClient(pMain->GetSafeHwnd(), &pos);
+
 		pMain->WebBrowserMoveClick(pos.x, pos.y);
 	}
 

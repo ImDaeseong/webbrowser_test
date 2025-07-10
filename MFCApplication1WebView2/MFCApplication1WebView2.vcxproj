@@ -184,6 +184,19 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="framework.h" />
+    <ClInclude Include="JsonManager.h" />
+    <ClInclude Include="json\allocator.h" />
+    <ClInclude Include="json\assertions.h" />
+    <ClInclude Include="json\autolink.h" />
+    <ClInclude Include="json\config.h" />
+    <ClInclude Include="json\features.h" />
+    <ClInclude Include="json\forwards.h" />
+    <ClInclude Include="json\json.h" />
+    <ClInclude Include="json\json_tool.h" />
+    <ClInclude Include="json\reader.h" />
+    <ClInclude Include="json\value.h" />
+    <ClInclude Include="json\version.h" />
+    <ClInclude Include="json\writer.h" />
     <ClInclude Include="MFCApplication1WebView2.h" />
     <ClInclude Include="MFCApplication1WebView2Dlg.h" />
     <ClInclude Include="pch.h" />
@@ -193,6 +206,19 @@
     <ClInclude Include="WebView2Ex.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="JsonManager.cpp" />
+    <ClCompile Include="json\json_reader.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">../pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">../pch.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="json\json_value.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">../pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">../pch.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="json\json_writer.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">../pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">../pch.h</PrecompiledHeaderFile>
+    </ClCompile>
     <ClCompile Include="MFCApplication1WebView2.cpp" />
     <ClCompile Include="MFCApplication1WebView2Dlg.cpp" />
     <ClCompile Include="pch.cpp">
@@ -208,6 +234,7 @@
     <ResourceCompile Include="MFCApplication1WebView2.rc" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="json\json_valueiterator.inl" />
     <None Include="packages.config" />
     <None Include="res\MFCApplication1WebView2.rc2" />
   </ItemGroup>
